@@ -12,15 +12,20 @@ subroutine implicit_update(nvar,naux,levelBouss,numBoussCells,doUpdate,time)
     use amr_module
     use topo_module, only: topo_finalized
     use bouss_module
-        
+#include <petsc/finclude/petscvec.h>
+    use petscvec
+
     implicit none
     
     integer, intent(in) :: nvar, naux, levelBouss, numBoussCells
     logical, intent(in) :: doUpdate
     
     !! pass in numBoussCells for this level so can dimension this array
-    real(kind=8) :: soln(0:2*numBoussCells)
-    real(kind=8) :: rhs(0:2*numBoussCells)
+    Vec :: v_soln,v_rhs
+    integer :: ierr
+ 
+    real(kind=8),pointer :: soln(:)
+    real(kind=8),pointer :: rhs(:)
     
     type(matrix_patchIndex), pointer :: mi
     type(matrix_levInfo),  pointer :: minfo
@@ -38,6 +43,11 @@ subroutine implicit_update(nvar,naux,levelBouss,numBoussCells,doUpdate,time)
 #ifdef WHERE_AM_I
     write(*,*) "starting implicit_update for level ",levelBouss
 #endif
+    PetscCall(VecCreateSeq(PETSC_COMM_SELF,2*numBoussCells,v_rhs,ierr))
+    PetscCall(VecCreateSeq(PETSC_COMM_SELF,2*numBoussCells,v_soln,ierr))
+    PetscCall(VecGetArrayF90(v_rhs,rhs,ierr))
+    PetscCall(VecGetArrayF90(v_soln,soln,ierr))
+    
     dt = possk(levelBouss)
     nD = numBoussCells ! shorthand for size of matrix blocks D1 to D4
     
@@ -141,7 +151,11 @@ subroutine implicit_update(nvar,naux,levelBouss,numBoussCells,doUpdate,time)
        if (minfo%numColsTot .gt. 0 .or. minfo%matrix_nelt .gt. 0) then
           call system_clock(clock_startLinSolve,clock_rate)
           call cpu_time(cpu_startLinSolve)
-          call petsc_driver(soln,rhs,levelBouss,numBoussCells,time,topo_finalized)
+          PetscCall(VecRestoreArrayF90(v_rhs,rhs,ierr))
+          PetscCall(VecRestoreArrayF90(v_soln,soln,ierr))
+          call petsc_driver(v_soln,v_rhs,levelBouss,numBoussCells,time,topo_finalized)
+          PetscCall(VecGetArrayF90(v_rhs,rhs,ierr))
+          PetscCall(VecGetArrayF90(v_soln,soln,ierr))
           call system_clock(clock_finishLinSolve,clock_rate)
           call cpu_time(cpu_finishLinSolve)
           !write(89,*)" level ",levelBouss,"  rhs   soln"
@@ -238,6 +252,10 @@ subroutine implicit_update(nvar,naux,levelBouss,numBoussCells,doUpdate,time)
     write(*,*) "ending   implicit_update for level ",levelBouss
 #endif
         
+    PetscCall(VecRestoreArrayF90(v_rhs,rhs,ierr))
+    PetscCall(VecRestoreArrayF90(v_soln,soln,ierr))
+    PetscCall(VecDestroy(v_rhs,ierr))
+    PetscCall(VecDestroy(v_soln,ierr))
 
 contains
 
@@ -254,8 +272,6 @@ contains
         !! ghost cells added to iaddaux definition, NOT to call
         iaddaux = locaux + iaux-1 + naux*((j-1+nghost)*mitot+i+nghost-1)
     end function iaddaux
-
-
 
 end subroutine implicit_update
 
