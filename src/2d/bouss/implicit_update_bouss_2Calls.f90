@@ -43,10 +43,10 @@ subroutine implicit_update(nvar,naux,levelBouss,numBoussCells,doUpdate,time)
 #ifdef WHERE_AM_I
     write(*,*) "starting implicit_update for level ",levelBouss
 #endif
-    PetscCall(VecCreateSeq(PETSC_COMM_SELF,2*numBoussCells,v_rhs,ierr))
-    PetscCall(VecCreateSeq(PETSC_COMM_SELF,2*numBoussCells,v_soln,ierr))
-    PetscCall(VecGetArrayF90(v_rhs,rhs,ierr))
-    PetscCall(VecGetArrayF90(v_soln,soln,ierr))
+    PetscCallA(VecCreateSeq(PETSC_COMM_SELF,2*numBoussCells,v_rhs,ierr))
+    PetscCallA(VecCreateSeq(PETSC_COMM_SELF,2*numBoussCells,v_soln,ierr))
+    PetscCallA(VecGetArrayF90(v_rhs,rhs,ierr))
+    PetscCallA(VecGetArrayF90(v_soln,soln,ierr))
     
     dt = possk(levelBouss)
     nD = numBoussCells ! shorthand for size of matrix blocks D1 to D4
@@ -151,11 +151,11 @@ subroutine implicit_update(nvar,naux,levelBouss,numBoussCells,doUpdate,time)
        if (minfo%numColsTot .gt. 0 .or. minfo%matrix_nelt .gt. 0) then
           call system_clock(clock_startLinSolve,clock_rate)
           call cpu_time(cpu_startLinSolve)
-          PetscCall(VecRestoreArrayF90(v_rhs,rhs,ierr))
-          PetscCall(VecRestoreArrayF90(v_soln,soln,ierr))
+          PetscCallA(VecRestoreArrayF90(v_rhs,rhs,ierr))
+          PetscCallA(VecRestoreArrayF90(v_soln,soln,ierr))
           call petsc_driver(v_soln,v_rhs,levelBouss,numBoussCells,time,topo_finalized)
-          PetscCall(VecGetArrayF90(v_rhs,rhs,ierr))
-          PetscCall(VecGetArrayF90(v_soln,soln,ierr))
+          PetscCallA(VecGetArrayF90(v_rhs,rhs,ierr))
+          PetscCallA(VecGetArrayF90(v_soln,soln,ierr))
           call system_clock(clock_finishLinSolve,clock_rate)
           call cpu_time(cpu_finishLinSolve)
           !write(89,*)" level ",levelBouss,"  rhs   soln"
@@ -252,10 +252,10 @@ subroutine implicit_update(nvar,naux,levelBouss,numBoussCells,doUpdate,time)
     write(*,*) "ending   implicit_update for level ",levelBouss
 #endif
         
-    PetscCall(VecRestoreArrayF90(v_rhs,rhs,ierr))
-    PetscCall(VecRestoreArrayF90(v_soln,soln,ierr))
-    PetscCall(VecDestroy(v_rhs,ierr))
-    PetscCall(VecDestroy(v_soln,ierr))
+    PetscCallA(VecRestoreArrayF90(v_rhs,rhs,ierr))
+    PetscCallA(VecRestoreArrayF90(v_soln,soln,ierr))
+    PetscCallA(VecDestroy(v_rhs,ierr))
+    PetscCallA(VecDestroy(v_soln,ierr))
 
 contains
 
