@@ -295,7 +295,7 @@ subroutine solnUpdate(valnew,valOther,nb,mitot,mjtot,nghost,nvar,dt, &
 
     integer, intent(in) :: nvar,nghost,mitot,mjtot,nD,mptr,nb,levelBouss
     logical, intent(in) :: doUpdate
-    real(kind=8), intent(in) :: soln(0:2*nD), dt, rhs(0:2*nD)
+    real(kind=8), intent(in) :: soln(2*nD), dt, rhs(2*nD)
 
     real(kind=8), intent(inout) :: valnew(nvar,mitot,mjtot)
     real(kind=8), intent(inout) :: valOther(nvar,mitot,mjtot)
@@ -431,7 +431,7 @@ subroutine solnUpdateSGN(valnew,valOther,nb,mitot,mjtot,nghost,nvar,dt, &
 
     integer, intent(in) :: nvar,naux,nghost,mitot,mjtot,nD,mptr,nb,levelBouss
     logical, intent(in) :: doUpdate
-    real(kind=8), intent(in) :: soln(0:2*nD), dt, rhs(0:2*nD)
+    real(kind=8), intent(in) :: soln(2*nD), dt, rhs(2*nD)
 
     real(kind=8), intent(inout) :: valnew(nvar,mitot,mjtot)
     real(kind=8), intent(inout) :: valOther(nvar,mitot,mjtot)
@@ -521,9 +521,9 @@ subroutine solnUpdateSGN(valnew,valOther,nb,mitot,mjtot,nghost,nvar,dt, &
                          (grav/alpha * etay(i,j) - soln(k_ij+nD))
                  else  ! CRS format,  different mapping
                   valnew(2,i,j) = valnew(2,i,j) + dt * valnew(1,i,j)*     &
-                         (grav/alpha * etax(i,j) - soln(2*(k_ij-1)))
+                         (grav/alpha * etax(i,j) - soln(2*(k_ij-1)+1))
                   valnew(3,i,j) = valnew(3,i,j) + dt * valnew(1,i,j)*     &
-                         (grav/alpha * etay(i,j) - soln(2*k_ij-1))
+                         (grav/alpha * etay(i,j) - soln(2*k_ij-1+1))
                  endif
 
                 ! save update in components 4,5 for Dirichlet BC next iteration
@@ -537,8 +537,8 @@ subroutine solnUpdateSGN(valnew,valOther,nb,mitot,mjtot,nghost,nvar,dt, &
                 else
                     !valOther(4,i,j) = soln(2*k_ij-1)
                     !valOther(5,i,j) = soln(2*k_ij)
-                    valOther(4,i,j) = soln(2*(k_ij-1))
-                    valOther(5,i,j) = soln(2*k_ij-1)
+                    valOther(4,i,j) = soln(2*(k_ij-1)+1)
+                    valOther(5,i,j) = soln(2*k_ij-1+1)
                  endif
             else  ! not a bouss cell. set to zero
                valOther(4,i,j) = 0.d0
@@ -626,8 +626,8 @@ subroutine solnUpdateSGN(valnew,valOther,nb,mitot,mjtot,nghost,nvar,dt, &
                 valnew(4,i,j) = soln(k_ij)
                 valnew(5,i,j) = soln(k_ij+nD)
               else
-                valnew(4,i,j) = soln(2*(k_ij-1))
-                valnew(5,i,j) = soln(2*k_ij-1)
+                valnew(4,i,j) = soln(2*(k_ij-1)+1)
+                valnew(5,i,j) = soln(2*k_ij-1+1)
               endif
             else
               valnew(4,i,j) = 0.d0

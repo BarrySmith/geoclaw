@@ -30,3 +30,4 @@
 -log_view
 -ksp_reuse_preconditioner
 #-ksp_monitor_true_residual
+-mpi_linear_solver_server_use_shared_memory false

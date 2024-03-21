@@ -166,7 +166,7 @@ contains
         crs = .true.
     endif
 
-    ! crs = .false.  ! uncomment this line to force CRS with SGN for testing
+    !crs = .false.  ! uncomment this line to force CRS with SGN for testing
 
     !------------------------------------------
     if (rest) then

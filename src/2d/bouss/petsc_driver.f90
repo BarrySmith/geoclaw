@@ -131,13 +131,13 @@ subroutine petsc_driver(solution,rhs,levelBouss,numBoussCells,time,topo_finalize
       ! if you want to use previous soln as initial guess,
       ! set soln to old soln here
 
-      if (.not. crs) then
-        ! switch to 0-based indexing for COO triplet format
-        ! (already 0-based for CRS)
-        do i = 1, 2*numBousscells
-           rhs_geo(i-1) = rhs_geo(i) 
-        end do
-      endif 
+!      if (.not. crs) then
+!        ! switch to 0-based indexing for COO triplet format
+!        ! (already 0-based for CRS)
+!        do i = 1, 2*numBousscells
+!           rhs_geo(i-1) = rhs_geo(i) 
+!        end do
+!      endif 
       
 
       CHKERRA(ierr)
@@ -160,12 +160,12 @@ subroutine petsc_driver(solution,rhs,levelBouss,numBoussCells,time,topo_finalize
       !endif
 
       ! check if need to adjust soln back to 1 indexing
-      if (.not. crs) then ! bump both  back up
-        do i = 1, 2*numBoussCells
-          soln(2*numBoussCells-i+1) = soln(2*numBoussCells-i)
-          rhs_geo(2*numBoussCells-i+1) = rhs_geo(2*numBoussCells-i) 
-        end do
-      endif
+!      if (.not. crs) then ! bump both  back up
+!        do i = 1, 2*numBoussCells
+!          soln(2*numBoussCells-i+1) = soln(2*numBoussCells-i)
+!          rhs_geo(2*numBoussCells-i+1) = rhs_geo(2*numBoussCells-i) 
+!        end do
+!      endif
       
       !! if itnum > itmax then
       !! call KSPGetResidualNorm(ksp(levelBouss),resmax,ierr)
