@@ -24,7 +24,6 @@ matplotlib.rcParams['animation.embed_limit'] = 2**128
 try:
     BoussDev = os.environ['BoussDev']
 except:
-    BoussDev = '/mnt/home/bsmith/clawpack/geoclaw/examples/bouss/'
     print("*** Need to define environment variable BoussDev to path")
 
 new_python_dir = os.path.join(BoussDev, 'new_python')
@@ -112,8 +111,8 @@ def setplot(plotdata=None):
         plotdata = ClawPlotData()
 
     plotdata.clearfigures()  # clear any old figures,axes,items dat
-    plotdata.format = "ascii"
-    #plotdata.format = "binary"
+    #plotdata.format = "ascii"
+    plotdata.format = "binary"
 
     try:
         tsudata = open(plotdata.outdir+'/geoclaw.data').readlines()
@@ -306,7 +305,7 @@ def setplot(plotdata=None):
     plotitem.imshow_cmax = 0.1 * etamax
     plotitem.add_colorbar = True
     plotitem.amr_celledges_show = [0]
-    plotitem.amr_patchedges_show = [0,1,1,1,1,1]
+    plotitem.amr_patchedges_show = [0,1,1,1,1,0]
     plotitem.amr_patchedges_color = ['k','r','g','c','b','m']
 
 
@@ -989,9 +988,10 @@ def setplot(plotdata=None):
     plotdata.printfigs = True                # print figures
     plotdata.print_format = 'png'            # file format
     plotdata.print_framenos = 'all'          # list of frames to print
+    plotdata.print_framenos = [31,32]        # list of frames to print
     #plotdata.print_framenos = range(24,27)           # list of frames to print
-    plotdata.print_fignos = 'all'            # list of figures to print
-    #plotdata.print_fignos = [20]             # list of figures to print
+    #plotdata.print_fignos = 'all'            # list of figures to print
+    plotdata.print_fignos = [20]             # list of figures to print
     plotdata.print_gaugenos = 'all'          # list of gauges to print
     plotdata.html = True                     # create html files of plots?
     plotdata.html_homelink = '../README.html'   # pointer for top of index

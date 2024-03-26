@@ -8,7 +8,7 @@ that will be read in by the Fortran code.
 
 import os, sys
 import numpy as np
-from clawpack.geoclaw_1d.nonuniform_grid_tools import make_mapc2p
+from clawpack.geoclaw.nonuniform_grid_tools import make_mapc2p
 
 
 # Read in nonuniform computational cell edges, which should have
@@ -78,29 +78,40 @@ def setrun(claw_pkg='geoclaw'):
     clawdata.num_cells[0] = mx
     print('+++ in setrun, mx = %i' % mx)
     
-    from clawpack.geoclaw_1d.data import GridData1D
+    from clawpack.geoclaw.data import GridData1D
     rundata.add_data(GridData1D(),'grid_data')
     rundata.grid_data.grid_type = grid_type  # should be set to 2 above
     rundata.grid_data.fname_celledges = fname_celledges
 
-    from clawpack.geoclaw_1d.data import BoussData1D
+    from clawpack.geoclaw.data import BoussData
+    rundata.add_data(BoussData(),'bouss_data')
+
+    #rundata.bouss_data.bouss = True
+
+    #if 0:
+    #    # Madsen-Sorensen
+    #    rundata.bouss_data.ibouss = 1
+    #    rundata.bouss_data.B_param = 0.
+    #    #rundata.bouss_data.B_param = 1./15.
+    #else:
+    #    # SGN
+    #    rundata.bouss_data.ibouss = 2
+    #    #rundata.bouss_data.B_param = 1.      # alpha
+    #    rundata.bouss_data.B_param = 1.153  # alpha
+
+    #rundata.bouss_data.sw_depth0 = 5.
+    #rundata.bouss_data.sw_depth1 = 5.
+
+    # To use Boussinesq solver, add bouss_data parameters here
+    # Also make sure to use the correct Makefile pointing to bouss version
+    from clawpack.geoclaw.data import BoussData1D
     rundata.add_data(BoussData1D(),'bouss_data')
 
-    rundata.bouss_data.bouss = True
+    rundata.bouss_data.bouss_equations = 2   # 0=SWE, 1=MS, 2=SGN
+    rundata.bouss_data.bouss_min_depth = 1.  # depth to switch to SWE
 
-    if 0:
-        # Madsen-Sorensen
-        rundata.bouss_data.ibouss = 1
-        rundata.bouss_data.B_param = 0.
-        #rundata.bouss_data.B_param = 1./15.
-    else:
-        # SGN
-        rundata.bouss_data.ibouss = 2
-        #rundata.bouss_data.B_param = 1.      # alpha
-        rundata.bouss_data.B_param = 1.153  # alpha
 
-    rundata.bouss_data.sw_depth0 = 5.
-    rundata.bouss_data.sw_depth1 = 5.
+
 
     # ---------------
     # Size of system:
@@ -146,8 +157,8 @@ def setrun(claw_pkg='geoclaw'):
     if clawdata.output_style==1:
         # Output ntimes frames at equally spaced times up to tfinal:
         # Can specify num_output_times = 0 for no output
-        clawdata.num_output_times = 40
-        clawdata.tfinal = 400.
+        clawdata.num_output_times = 50
+        clawdata.tfinal = 500.
         clawdata.output_t0 = True  # output at initial (or restart) time?
 
     elif clawdata.output_style == 2:
@@ -256,8 +267,8 @@ def setrun(claw_pkg='geoclaw'):
     #   'center',  'capacity', 'xleft'  (see documentation).
     # Isn't used for this non-amr version, but still expected in data.
 
-    amrdata = rundata.amrdata
-    amrdata.aux_type = ['center','capacity']
+    #amrdata = rundata.amrdata
+    #amrdata.aux_type = ['center','capacity']
 
     geo_data = rundata.geo_data
 

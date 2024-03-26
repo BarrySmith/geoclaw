@@ -112,7 +112,8 @@ subroutine implicit_update(nvar,naux,levelBouss,numBoussCells,doUpdate,time)
       else ! CRS format
          minfo%vals = 0
          minfo%cols = -1  ! to recognize if not overwritten with real col indices
-        call prepBuildSparseMatrixSGNcrs(soln,rhs,nvar,naux,levelBouss,numBoussCells)
+         call prepBuildSparseMatrixSGNcrs(soln,rhs,nvar,naux,levelBouss,numBoussCells)
+         CHKMEMQ
       endif
     endif
     
@@ -153,6 +154,7 @@ subroutine implicit_update(nvar,naux,levelBouss,numBoussCells,doUpdate,time)
           call cpu_time(cpu_startLinSolve)
           PetscCallA(VecRestoreArrayF90(v_rhs,rhs,ierr))
           PetscCallA(VecRestoreArrayF90(v_soln,soln,ierr))
+          CHKMEMQ;
           call petsc_driver(v_soln,v_rhs,levelBouss,numBoussCells,time,topo_finalized)
           PetscCallA(VecGetArrayF90(v_rhs,rhs,ierr))
           PetscCallA(VecGetArrayF90(v_soln,soln,ierr))
@@ -215,6 +217,7 @@ subroutine implicit_update(nvar,naux,levelBouss,numBoussCells,doUpdate,time)
         !endif
     end do        
 !$OMP END PARALLEL DO
+    CHKMEMQ
 
     !! next loop to copy from either other grids at same level and to
     !! update ghost cell momenta with newly copied psi

@@ -82,6 +82,7 @@ subroutine petsc_driver(solution,rhs,levelBouss,numBoussCells,time,topo_finalize
             end do
           else 
             ! using CRS sparse matrix format
+            CHKMEMQ;
             call MatCreateSeqAijWithArrays(PETSC_COMM_SELF,2*numBoussCells,  & 
                        2*numBoussCells,minfo%rowPtr,minfo%cols,  &
                        minfo%vals,Jr(levelBouss),ierr)

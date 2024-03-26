@@ -111,9 +111,8 @@ def setrun(claw_pkg='geoclaw'):
     # restart_file 'fort.chkNNNNN' specified below should be in 
     # the OUTDIR indicated in Makefile.
 
-    # mjb change below for restart
-    clawdata.restart = True               # True to restart from prior results
-    #clawdata.restart = False               # True to restart from prior results    
+    clawdata.restart = True                # True to restart from prior results
+    #clawdata.restart = False               # True to restart from prior results
     clawdata.restart_file = 'fort.chk00061'  # File to use for restart data
     
     
@@ -125,7 +124,6 @@ def setrun(claw_pkg='geoclaw'):
     # Note that the time integration stops after the final output time.
     # The solution at initial time t0 is always written in addition.
 
-    # mjb change to 3 for restart
     clawdata.output_style = 3
 
     if clawdata.output_style==1:
@@ -148,11 +146,15 @@ def setrun(claw_pkg='geoclaw'):
         # Output every iout timesteps with a total of ntot time steps:
         clawdata.output_step_interval = 1
         clawdata.total_steps = 63
+        #clawdata.total_steps = 3
         clawdata.output_t0 = True
         #clawdata.output_t0 = False
         
 
     clawdata.output_format = 'binary'      # 'ascii' or 'binary' 
+    
+    if (clawdata.restart):
+       clawdata.output_t0 = False # output at initial (or restart) time?
 
     clawdata.output_q_components = 'all'   # need all
     clawdata.output_aux_components = 'none'  # eta=h+B is in q
@@ -167,7 +169,7 @@ def setrun(claw_pkg='geoclaw'):
     # The current t, dt, and cfl will be printed every time step
     # at AMR levels <= verbosity.  Set verbosity = 0 for no printing.
     #   (E.g. verbosity == 2 means print only on levels 1 and 2.)
-    clawdata.verbosity = 5
+    clawdata.verbosity = 6
 
 
 
@@ -270,7 +272,7 @@ def setrun(claw_pkg='geoclaw'):
     # Specify when checkpoint files should be created that can be
     # used to restart a computation.
 
-    clawdata.checkpt_style = 1
+    clawdata.checkpt_style = 4
 
     if clawdata.checkpt_style == 0:
         # Do not checkpoint at all
@@ -288,6 +290,10 @@ def setrun(claw_pkg='geoclaw'):
         # Checkpoint every checkpt_interval timesteps (on Level 1)
         # and at the final time.
         clawdata.checkpt_interval = 50
+
+    elif np.abs(clawdata.checkpt_style) == 4:
+        # checkpoint at same time as graphics output
+        pass
 
 
     # ---------------
@@ -340,9 +346,6 @@ def setrun(claw_pkg='geoclaw'):
 
 
     # ---------------
-    # AMR flagregions:
-    # ---------------
-
     # Regions:
     # ---------------
     regions = rundata.regiondata.regions 
@@ -386,7 +389,7 @@ def setgeo(rundata):
     # == Physics ==
     geo_data.gravity = 9.81
     geo_data.coordinate_system =  1
-    geo_data.earth_radius = 6367500.0
+    geo_data.earth_radius = 6367.5e3
 
     # == Forcing Options
     geo_data.coriolis_forcing = False
@@ -400,8 +403,12 @@ def setgeo(rundata):
 
     # Refinement settings
     refinement_data = rundata.refinement_data
-    refinement_data.variable_dt_refinement_ratios = True
+    refinement_data.variable_dt_refinement_ratios = False
     refinement_data.wave_tolerance = 0.025
+
+    #refinement_data.wave_tolerance = 0.01
+    #refinement_data.deep_depth = 1e2
+    #refinement_data.max_level_deep = 30
 
     # == settopo.data values ==
 
