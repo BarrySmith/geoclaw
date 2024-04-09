@@ -89,9 +89,9 @@
 !            allocate(minfo%cols(0:max_matrix_nelt),        &
 !                     minfo%vals(0:max_matrix_nelt),        &
 !                     minfo%rowPtr(0:2*minfo%numBoussCells))
-            PetscCallA(PCMPIServerAllocateArrayInt(zero, 2*minfo%numBoussCells + 1, minfo%rowPtr, ierr))
-            PetscCallA(PCMPIServerAllocateArrayInt(zero, max_matrix_nelt, minfo%cols, ierr))
-            PetscCallA(PCMPIServerAllocateArrayScalar(zero, max_matrix_nelt, minfo%vals, ierr))
+            PetscCallA(PetscShmgetAllocateArrayInt(zero, 2*minfo%numBoussCells + 1, minfo%rowPtr, ierr))
+            PetscCallA(PetscShmgetAllocateArrayInt(zero, max_matrix_nelt, minfo%cols, ierr))
+            PetscCallA(PetscShmgetAllocateArrayScalar(zero, max_matrix_nelt, minfo%vals, ierr))
             CHKMEMQ;
          endif
       endif

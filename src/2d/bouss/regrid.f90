@@ -99,9 +99,9 @@
             if (.not. crs) then ! COO triplet format
               deallocate(minfo%matrix_ia,minfo%matrix_ja,minfo%matrix_sa)
             else                  ! CRS format
-              PetscCallA(PCMPIServerDeallocateArrayInt(minfo%rowPtr, ierr))
-              PetscCallA(PCMPIServerDeallocateArrayInt(minfo%cols, ierr))
-              PetscCallA(PCMPIServerDeallocateArrayScalar(minfo%vals, ierr))
+              PetscCallA(PetscShmgetDeallocateArrayInt(minfo%rowPtr, ierr))
+              PetscCallA(PetscShmgetDeallocateArrayInt(minfo%cols, ierr))
+              PetscCallA(PetscShmgetDeallocateArrayScalar(minfo%vals, ierr))
             endif
             minfo%numBoussGrids = 0  ! reset for new counting
             minfo%numBoussCells = 0  ! reset for new counting
