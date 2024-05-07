@@ -207,7 +207,11 @@ c============= compute fluctuations==========================================
                bmasdq(3,i)=0.0d0
                bpasdq(3,i)=0.0d0
                
-            do  mw=1,3
+               do  mw=1,3
+                  print*,  s(mw)
+                  print*,  abs(s(mw))
+                  print*, g,hhat
+                  print*, dsqrt(g*hhat)
                if ((abs(s(mw)) > 0.d0) .and. 
      &             (abs(s(mw)) < 0.001d0*dsqrt(g*hhat))) then
                  ! split correction symmetrically if nearly zero
