@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document><name>etopo1_-137_-122_38_51_1min.kml</name>
+
+<Style id="Path">
+<LineStyle><color>FF00FF00</color><width>3</width></LineStyle>
+<PolyStyle><color>00000000</color></PolyStyle>
+</Style>
+<Placemark><name>etopo1_-137_-122_38_51_1min</name>
+<description>  x1 = -136.991667, x2 = -121.991667
+  y1 = 38.008333, y2 = 51.008333</description>
+<styleUrl>#Path</styleUrl>
+<Polygon>
+<tessellate>1</tessellate>
+<altitudeMode>clampToGround</altitudeMode>
+<outerBoundaryIs><LinearRing><coordinates>
+
+-136.991666667,38.008333333,0.000000000
+-121.991666666,38.008333333,0.000000000
+-121.991666666,51.008333334,0.000000000
+-136.991666667,51.008333334,0.000000000
+-136.991666667,38.008333333,0.000000000
+
+</coordinates></LinearRing></outerBoundaryIs>
+</Polygon>
+</Placemark>
+
+</Document>
+</kml>

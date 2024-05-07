@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document><name>Region_06.kml</name>
+
+<Style id="Path">
+<LineStyle><color>FFFFFFFF</color><width>3</width></LineStyle>
+<PolyStyle><color>00000000</color></PolyStyle>
+</Style>
+<Placemark><name>Region 6</name>
+<description>minlevel = 7, maxlevel = 7
+  t1 = 2400., t2 = 1000000000.
+  x1 = -124.16, x2 = -124.08
+  y1 = 46.87, y2 = 46.92
+
+Level 7 resolution:  
+dy = 0 deg, 0 min, 0.666667 sec 
+= 20.5556 meters
+</description>
+<styleUrl>#Path</styleUrl>
+<Polygon>
+<tessellate>1</tessellate>
+<altitudeMode>clampToGround</altitudeMode>
+<outerBoundaryIs><LinearRing><coordinates>
+
+-124.160000000,46.870000000,0.000000000
+-124.080000000,46.870000000,0.000000000
+-124.080000000,46.920000000,0.000000000
+-124.160000000,46.920000000,0.000000000
+-124.160000000,46.870000000,0.000000000
+
+</coordinates></LinearRing></outerBoundaryIs>
+</Polygon>
+</Placemark>
+
+</Document>
+</kml>

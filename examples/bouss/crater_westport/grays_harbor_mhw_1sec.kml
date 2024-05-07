@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document><name>grays_harbor_mhw_1sec.kml</name>
+
+<Style id="Path">
+<LineStyle><color>FF00FF00</color><width>3</width></LineStyle>
+<PolyStyle><color>00000000</color></PolyStyle>
+</Style>
+<Placemark><name>grays_harbor_mhw_1sec</name>
+<description>  x1 = -124.299907, x2 = -123.700185
+  y1 = 46.750093, y2 = 47.099815</description>
+<styleUrl>#Path</styleUrl>
+<Polygon>
+<tessellate>1</tessellate>
+<altitudeMode>clampToGround</altitudeMode>
+<outerBoundaryIs><LinearRing><coordinates>
+
+-124.299907416,46.750092569,0.000000000
+-123.700185210,46.750092569,0.000000000
+-123.700185210,47.099814781,0.000000000
+-124.299907416,47.099814781,0.000000000
+-124.299907416,46.750092569,0.000000000
+
+</coordinates></LinearRing></outerBoundaryIs>
+</Polygon>
+</Placemark>
+
+</Document>
+</kml>
