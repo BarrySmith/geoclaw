@@ -167,6 +167,6 @@ COMMON_SOURCES += \
   $(BOUSSLIB)/resetBoussStuff.f \
   $(BOUSSLIB)/simpleBound.f90 \
   $(BOUSSLIB)/umfpack_support.f \
-  $(CLAW)/riemann/src/rpn2_geoclaw.f \
+  $(BOUSSLIB)/rpn2_geoclaw.f \
   $(CLAW)/riemann/src/rpt2_geoclaw.f \
-  $(CLAW)/riemann/src/geoclaw_riemann_utils.f \
+  $(BOUSSLIB)/geoclaw_riemann_utils.f \

@@ -8,8 +8,8 @@
 0                    =: test_topography      # (Type topography specification) 
 2                    =: ntopofiles          
 
-'/Users/barrysmith/Src/clawpack/geoclaw/examples/bouss/crater_westport/etopo1_-137_-122_38_51_1min.asc' 
+'/mnt/home/bsmith/clawpack/geoclaw/examples/bouss/crater_westport/etopo1_-137_-122_38_51_1min.asc' 
    3   # topo_type
 
-'/Users/barrysmith/Src/clawpack/geoclaw/examples/bouss/crater_westport/grays_harbor_mhw_1sec.asc' 
+'/mnt/home/bsmith/clawpack/geoclaw/examples/bouss/crater_westport/grays_harbor_mhw_1sec.asc' 
    3   # topo_type
