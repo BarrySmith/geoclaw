@@ -1,40 +1,29 @@
-# options for PETSC using MPI
+# options for PETSC using MUMPS
 # To use his file, set environment variable PETSC_OPTIONS to
 #       '-options_file  /path/to/this/file'
 
-# Currently using GMRES Krylov space method as the main solver
+# This version uses the MUMPs direct solver
+# because -ksp_reuse_preconditioner is used
+# it must be run with GMRES (for when it is reusing an "out of date" preconditioner
 # and algebraic multigrid as the preconditioner
-
+#
 # For more about the options, see
 #    https://petsc.org/release/manualpages/KSP/KSPSetFromOptions
 #    https://petsc.org/release/manualpages/PC/PCSetFromOptions/
+
+-mpi_linear_solver_server
+-mpi_linear_solver_server_view
 
 # set min numbers of matrix rows per MPI rank  (default is 10000)
 -pc_mpi_minimum_count_per_rank 5000
 
 # convergence criterion for linear solver (larger than PETSc default):
 -ksp_rtol 1.e-9
-
-# linear solver:
--mpi_linear_solver_server
--mpi_linear_solver_server_view
-#-info
--ksp_type none
--pc_type ml
-#-pc_factor_mat_solver_type mumps
 -ksp_type gmres
-#-ksp_monitor
-#-fp_trap off
-#-ksp_monitor
-#-ksp_converged_reason
-#-ksp_view
 -ksp_max_it 200
--log_view
 -ksp_reuse_preconditioner
-#-ksp_monitor_true_residual
-#-mpi_linear_solver_server_use_shared_memory false
-#-start_in_debugger
-#-debugger_ranks 0
--options_view
-#-malloc_debug
+
+-pc_type lu
+-pc_factor_mat_solver_type mumps
+-log_view
 

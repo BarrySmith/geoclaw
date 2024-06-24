@@ -11,20 +11,12 @@ CLAWMAKE = $(CLAW)/clawutil/src/Makefile.common
 # Adjust these variables if desired:
 # ----------------------------------
 
-CLAW_PKG = geoclaw                  # Clawpack package to use
-
-# These environment variables need to be set properly, usually in your shell:
-#PETSC_DIR=/Users/rjl/git/Clones/petsc
-#PETSC_ARCH=arch-darwin-c-opt
-
-# The file petscMPIoptions sets parameters for MPI and the iterative solver:
-PETSC_OPTIONS=-options_file $(CLAW)/geoclaw/examples/bouss/petscMPIoptions
-
-EXE = $(PWD)/xgeoclaw
-MPIEXEC=/mnt/sw/nix/store/0n0cq6zhl9rkdzpvqdf8jxw6j56hbjdh-openmpi-4.0.7/bin/mpiexec
-#RUNEXE="${EXE}"
+CLAW_PKG       = geoclaw                  # Clawpack package to use
+EXE            = $(PWD)/xgeoclaw
+MPIEXEC        = mpiexec
 MPI_NUM_RANKS ?= 1
-RUNEXE="mpiexec --bind-to numa --map-by numa -n ${MPI_NUM_RANKS}  ${EXE}"
+PETSC_OPTIONS ?= "-options_file $(CLAW)/geoclaw/examples/bouss/petscOptionsGAMG"
+RUNEXE         = '${MPIEXEC} --map-by numa --bind-to numa -n ${MPI_NUM_RANKS} ${EXE}'
 SETRUN_FILE = setrun.py           # File containing function to make data
 OUTDIR = _output                  # Directory for output
 SETPLOT_FILE = setplot.py         # File containing function to set plots
@@ -36,12 +28,10 @@ PLOTDIR = _plots                  # Directory for plots
 FC = gfortran
 
 # Some compiler flags below are needed for PETSc
-PETSC_INCLUDE = $(PETSC_DIR)/include $(PETSC_DIR)/$(PETSC_ARCH)/include         
-INCLUDE += $(PETSC_INCLUDE)
-PETSC_LFLAGS = $(shell PKG_CONFIG_PATH=$(PETSC_DIR)/$(PETSC_ARCH)/lib/pkgconfig pkg-config --libs-only-L --libs-only-l PETSc)
+INCLUDE      += $(PETSC_DIR)/include $(PETSC_DIR)/$(PETSC_ARCH)/include
+PETSC_LFLAGS = -Wl,-rpath,$(shell PKG_CONFIG_PATH=$(PETSC_DIR)/$(PETSC_ARCH)/lib/pkgconfig pkg-config --libs-only-L PETSc | sed "s?-L??g") $(shell PKG_CONFIG_PATH=$(PETSC_DIR)/$(PETSC_ARCH)/lib/pkgconfig pkg-config --libs-only-L --libs-only-l PETSc)
 
-FFLAGS ?= -O  -gno-strict-dwarf -fbounds-check \
-      -std=legacy -ffpe-trap='invalid,overflow,zero' -fopenmp
+FFLAGS ?= -O  -gno-strict-dwarf -fbounds-check -std=legacy -ffpe-trap='invalid,overflow,zero' -fopenmp
 FFLAGS += -DHAVE_PETSC -ffree-line-length-none
 LFLAGS += $(PETSC_LFLAGS) -fopenmp
 

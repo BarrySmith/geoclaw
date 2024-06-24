@@ -160,9 +160,10 @@ program amr2
     character(len=*), parameter :: parmfile = 'fort.parameters'
 
 #ifdef HAVE_PETSC
-!   needs to be very first line in main
-      call PetscInitialize(ierr)
-      CHKERRA(ierr);
+    !   needs to be very first line in main
+    PetscCallA(PetscOptionsSetValue(PETSC_NULL_OPTIONS,'-mpi_linear_solver_server','',ierr))
+    PetscCallA(PetscOptionsSetValue(PETSC_NULL_OPTIONS,'-mpi_linear_solver_server_view','',ierr))
+    PetscCallA(PetscInitialize(ierr))
 #endif
     timing_unit = 48
 
